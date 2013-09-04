@@ -1,4 +1,5 @@
 import unicodedata
+import regex
 from pyquery import PyQuery
 import sys
 
@@ -16,17 +17,15 @@ def strip_tags(text):
     html = PyQuery(text)
     return html.remove('code').remove('a').text()
 
+
 def simplify(text):
     text = unicode(text)
 
-    dash_char_numbers = [45, 2012, 2013, 2014, 2015, 2053]
-    convert_hyphens_to_spaces = dict((char_number, u' ') for char_number in dash_char_numbers)
-    kill_symbols_punctuation_digits = dict((char_number, None) for char_number in xrange(sys.maxunicode)
-                                           if unicodedata.category(unichr(char_number))[0] in ['P', 'S', 'N'])
+    # Need to worry about hyphens now.
+    nice_character_text = regex.sub(ur"(\p{P}|\p{S}|\p{N})+", "", text)
 
-    no_hyphens_text = text.translate(convert_hyphens_to_spaces)
-    nice_character_text = no_hyphens_text.translate(kill_symbols_punctuation_digits).lower()
     return ' '.join(nice_character_text.split())
+
 
 def pull_stop_words(text, stop_words=None):
     if stop_words is None:

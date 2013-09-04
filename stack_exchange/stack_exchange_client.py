@@ -92,6 +92,10 @@ class Questions(BaseHTTPClient):
         return BaseHTTPClient(self.url + 'no-answers/', self.queryvars)
 
 
+class Search(BaseHTTPClient):
+    pass
+
+
 class TagsIds(BaseHTTPClient):
 
     @property
@@ -281,6 +285,10 @@ class StackExchangeClient(object):
     def users(self):
         url = self.url + 'users/'
         return Users(url, self.queryvars)
+
+    @property
+    def search(self):
+        return Search(self.url + 'search/', self.queryvars)
 
 if __name__ == '__main__':
     client_id = 1962

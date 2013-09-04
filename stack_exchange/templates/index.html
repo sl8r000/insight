@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
+    </head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#loader').hide();
+            var display_questions = function(data) {
+                $('#target').empty();
+                var recs = data.result;
+                var titles = recs.map(function(elt) { return elt[0].title; });
+                $.each(titles, function(index, value) {
+                    $('#target').append('<hr></hr>')
+                    $('#target').append(value)
+                });
+            }
+
+
+            $('#submit-user').click(function() {
+                $('#loader').show();
+                $.get('/recommended/' + $('#user').val())
+                .done(display_questions);
+            });
+        });
+    </script>
+    <body>
+        <div class="pure-g">
+            <div class="pure-u-1-3"></div>
+            <div class='pure-u-1-3'>
+                <form class="pure-form">
+                    <fieldset>
+                        <legend>Enter a StackOverflow User ID</legend>
+                        <input type="text" placeholder="User ID" id="user">
+                        <button type="button" class="pure-button pure-button-primary" id="submit-user" style="background: #e67e22;">Go</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="pure-g">
+            <div class="pure-u-1-5"></div>
+            <div class="pure-u-3-5" id="target">
+                <img src="static/images/loader.gif" id="loader" style="display: block; margin: auto;">
+            </div>
+        </div>
+    </body>
+</html>

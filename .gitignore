@@ -33,3 +33,14 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# SublimeText
+*.sublime-project
+*.sublime-workspace
+
+# Web stuff
+site/Glyphs/*
+site/Icons/*
+site/UI/fonts/*
+site/UI/images/*
+

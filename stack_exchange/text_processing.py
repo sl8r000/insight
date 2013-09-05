@@ -1,7 +1,5 @@
-import unicodedata
 import regex
 from pyquery import PyQuery
-import sys
 
 DEFAULT_STOP_WORDS = set('''a able about across after all almost also am among an and any are as at
                             be because been but by can cannot could dear did do does either else ever

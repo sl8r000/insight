@@ -2,17 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Flat UI</title>
+    <title>Stacked</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="UI/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="UI/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="UI/css/flat-ui.css" rel="stylesheet">
 
-    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="UI/shortcut icon" href="images/favicon.ico">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -20,81 +20,70 @@
     <![endif]-->
   </head>
   <body>
-    <h1 class="h1" style="font-size: 142px !important; text-align: center;">Stack Overflow</h1>
-    <h1 class="h1" style="font-size: 142px !important; text-align: center;">Expertizer</h1>
+    <h1 class="h1" style="font-size: 142px !important; text-align: center;">Stacked</h1>
     <div class="container">
         <div class="control-group huge">
             <div class="input-append" style="width: 90%;">
-                <input class="span2" id="appendedInputButton-01" type="text" placeholder="Search" style="width: 100%; height: 50px; font-size: 44px; line-height: 49px;">
-                <button class="btn btn-huge" type="button" style="height: 50px; padding: 28px 30px 46px;"><span class="fui-search" style="height: 50px;"></span></button>
+                <input class="span2" type="text" placeholder="User ID" style="display: inline-block; margin: 0 auto; width: 95%; height: 50px; font-size: 44px; line-height: 49px;" id="user">
+                <button class="btn btn-huge" type="button" id="submit" style="height: 50px; padding: 28px 30px 46px;"><span class="fui-search" style="height: 50px;"></span></button>
             </div>
         </div>
+        <img src="UI/images/loading.gif" id="loader" style="display: block; margin: auto;">
+        <table class="table table-hover table-striped" id="results" style="font-size: 22px; width: 100%;">
+        </table>
     </div>
     <!-- /.container -->
 
 
     <!-- Load JS here for greater good =============================-->
-    <script src="js/jquery-1.8.3.min.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-select.js"></script>
-    <script src="js/bootstrap-switch.js"></script>
-    <script src="js/flatui-checkbox.js"></script>
-    <script src="js/flatui-radio.js"></script>
-    <script src="js/jquery.tagsinput.js"></script>
-    <script src="js/jquery.placeholder.js"></script>
-    <script src="js/jquery.stacktable.js"></script>
-  </body>
-</html>
-
-
-
-<!-- <html>
-    <head>
-        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
-    </head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="UI/js/jquery-1.8.3.min.js"></script>
+    <script src="UI/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="UI/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="UI/js/bootstrap.min.js"></script>
+    <script src="UI/js/bootstrap-select.js"></script>
+    <script src="UI/js/bootstrap-switch.js"></script>
+    <script src="UI/js/flatui-checkbox.js"></script>
+    <script src="UI/js/flatui-radio.js"></script>
+    <script src="UI/js/jquery.tagsinput.js"></script>
+    <script src="UI/js/jquery.placeholder.js"></script>
+    <script src="UI/js/jquery.stacktable.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
 
             $('#loader').hide();
+            $('#results').hide();
+
             var display_questions = function(data) {
-                $('#target').empty();
+                $('#results').empty();
+                $('#loader').hide();
+                $('#results').show();
+                $('#results').append('<tr><th>Score</th><th>Votes</th><th>Answers</th><th>Views</th><th>Title</th><tr>')
                 var recs = data.result;
-                var titles = recs.map(function(elt) { return elt[0].title; });
-                $.each(titles, function(index, value) {
-                    $('#target').append('<hr></hr>')
-                    $('#target').append(value)
+                $.each(recs, function(index, elt) {
+                    var score   = '<td style="font-size: 44px; vertical-align: middle">' + (100*elt[1]).toString().substring(0,2) + '</td>'
+                    var title   = '<td style="font-size: 22px; vertical-align: middle">' + '<a href=' + elt[0].link + '>' + elt[0].title + '</a></td>';
+                    var views   = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].view_count + '</td>';
+                    var votes   = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].score + '</td>';
+                    var answers = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].answer_count + '</td>';
+
+                    var row = '<tr style="cursor: pointer">' + score + votes + answers + views + title + '</tr>';
+                    $('#results').append(row);
+
                 });
+                $('tr').click(function() {
+                    var link = $(this).find('td a').attr('href');
+                    window.open(link);
+                }).hover( function() {
+                    $(this).toggleClass('hover');
+                });                    
             }
 
-
-            $('#submit-user').click(function() {
+            $('#submit').click(function() {
                 $('#loader').show();
                 $.get('/recommended/' + $('#user').val())
                 .done(display_questions);
             });
         });
     </script>
-    <body>
-        <div class="pure-g">
-            <div class="pure-u-1-3"></div>
-            <div class='pure-u-1-3'>
-                <form class="pure-form">
-                    <fieldset>
-                        <legend>Enter a StackOverflow User ID</legend>
-                        <input type="text" placeholder="User ID" id="user">
-                        <button type="button" class="pure-button pure-button-primary" id="submit-user" style="background: #e67e22;">Go</button>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1-5"></div>
-            <div class="pure-u-3-5" id="target">
-                <img src="static/images/loader.gif" id="loader" style="display: block; margin: auto;">
-            </div>
-        </div>
-    </body>
-</html> -->
+  </body>
+</html>

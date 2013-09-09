@@ -93,7 +93,10 @@ class Questions(BaseHTTPClient):
 
 
 class Search(BaseHTTPClient):
-    pass
+
+    @property
+    def advanced(self):
+        return BaseHTTPClient(self.url + 'advanced/', self.queryvars)
 
 
 class TagsIds(BaseHTTPClient):

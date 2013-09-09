@@ -1,14 +1,20 @@
 from flask import Flask, render_template, jsonify
+import os
 
 from models.naive_bayes_body import NaiveBayesBody
 from data_sources.live_source import LiveSource
 
-app = Flask(__name__)
+
+app = Flask(__name__, template_folder='UI', static_folder='UI')
 
 
 @app.route('/')
 def show_index():
     return render_template('index.html')
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return error
 
 @app.route('/recommended/<user_id>')
 def give_recommendations(user_id):

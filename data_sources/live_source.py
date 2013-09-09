@@ -30,6 +30,6 @@ class LiveSource(DataSource):
     def get_candidate_questions(self, tags):
         questions = []
         for tag in tags:
-            questions.extend(self.client.search.get(tagged=tag, filter='withbody'))
+            questions.extend(self.client.search.advanced.get(tagged=tag, filter='withbody', accepted=False))
 
         return questions

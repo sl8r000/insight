@@ -21,7 +21,7 @@ def simplify(text):
 
     # Need to worry about hyphens now.
     nice_character_text = regex.sub(ur"(\p{P}|\p{S}|\p{N})+", "", text)
-
+    nice_character_text = nice_character_text.lower()
     return ' '.join(nice_character_text.split())
 
 

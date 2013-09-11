@@ -17,7 +17,7 @@ bayes_results = []
 tags_results = []
 random_forest_results = []
 sgd_results = []
-for i in range(50):
+for i in range(10):
     bayes = NaiveBayesBody()
     tags = TagsBaseline()
     random_forest = SKLearnBagOfWords(RandomForestClassifier)

@@ -44,3 +44,5 @@ site/Icons/*
 site/UI/fonts/*
 site/UI/images/*
 
+# Data dumps
+validation/*/*.json

@@ -8,7 +8,8 @@ class TagsBaseline(Model):
     def train(self, dataset):
         self._most_common_tags = dict()
         for user_id in dataset:
-            tags = itertools.chain(*[item['question']['tags'] for item in dataset[user_id]])
+            accepted_questions = [item['question'] for item in dataset[user_id] if item['answer_accepted']]
+            tags = itertools.chain(*[question['tags'] for question in accepted_questions])
             tag_counts = collections.Counter(tags)
             self._most_common_tags[user_id] = set([count[0] for count in tag_counts.most_common(5)])
 
@@ -25,4 +26,4 @@ class TagsBaseline(Model):
             score = sum(1 for triple in triples[:top_number] if triple[1] == True)/float(top_number)
             accuracy_per_user[user_id] = score
 
-        return sum(accuracy_per_user.values()) / len(accuracy_per_user)
+        return accuracy_per_user

@@ -58,7 +58,7 @@ class NaiveBayesBody(Model):
             score = sum(1 for triple in triples[:top_number] if triple[1] == True)/float(top_number)
             accuracy_per_user[user_id] = score
 
-        return sum(accuracy_per_user.values()) / len(accuracy_per_user)
+        return accuracy_per_user
 
     def extract_body_words(self, question):
         body = question['body']

@@ -1,3 +1,4 @@
+import collections
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from model import Model
@@ -46,5 +47,4 @@ class SKLearnBagOfWords(Model):
             score = sum(1 for triple in triples[:top_number] if triple[1] == 1)/float(top_number)
             accuracy_per_user[user_id] = score
 
-        all_scores = accuracy_per_user.values()
-        return sum(accuracy_per_user.values()) / len(accuracy_per_user)
+        return accuracy_per_user

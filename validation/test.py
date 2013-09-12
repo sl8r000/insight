@@ -6,11 +6,14 @@ from pandas import DataFrame, Series
 import random
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.svm import SVC
 
 from models.naive_bayes_body import NaiveBayesBody
+from models.naive_bayes_title import NaiveBayesTitle
 from models.tags_baseline import TagsBaseline
 from models.sk_learn import SKLearnBagOfWords
 from models.randomness_baseline import Randomness
+from models.sk_learn_bagging import SKLearnTextBagging
 
 
 if __name__ == '__main__':
@@ -29,6 +32,8 @@ if __name__ == '__main__':
     random_forest_results = []
     adaboost_results = []
     randomness_results = []
+    bayes_title_results = []
+    bagging_results = []
     for i in range(args.num_repetitions):
         training_data = dict()
         testing_data = dict()
@@ -39,6 +44,16 @@ if __name__ == '__main__':
 
             training_data[user_id] = records[:args.split]
             testing_data[user_id] = records[args.split:]
+
+        bagging = SKLearnTextBagging(classifier_class_list=[RandomForestClassifier, AdaBoostClassifier, SVC], text_source='title')
+        bagging.train(training_data)
+        these_bagging_results = bagging.test(testing_data, top_number=args.top)
+        bagging_results.append(these_bagging_results)
+
+        bayes_title = NaiveBayesTitle()
+        bayes_title.train(training_data)
+        these_bayes_title_results = bayes_title.test(testing_data, top_number=args.top)
+        bayes_title_results.append(these_bayes_title_results)
 
         bayes = NaiveBayesBody()
         bayes.train(training_data)
@@ -66,8 +81,11 @@ if __name__ == '__main__':
         randomness_results.append(these_randomness_results)
 
 
-individual_frames = [DataFrame(x) for x in [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results]]
-total_frame = pd.concat(individual_frames, axis=1, keys=['bayes', 'tags', 'random_forest', 'adaboost', 'randomnes'])
+results = [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results, bayes_title_results, bagging_results]
+keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomnes', 'bayes_title', 'bagging']
+
+individual_frames = [DataFrame(x) for x in results]
+total_frame = pd.concat(individual_frames, axis=1, keys=keys)
 total_frame = total_frame.swaplevel(0, 1, axis=1)
 
 mean_matrix = total_frame.mean().unstack()

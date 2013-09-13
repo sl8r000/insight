@@ -21,7 +21,7 @@ def give_recommendations(user_id):
     model = NaiveBayesBody()
     data_source = LiveSource.from_credentials(client_id=1962, key='IHEAzrM4kaVEBHGcLOP)tQ((')
 
-    recommendations = model.recommend(data_source, user_id=user_id, number=5)
+    recommendations = model.recommend(data_source, user_id=22656, number=5)
     return jsonify({'result': recommendations})
 
 if __name__ == '__main__':

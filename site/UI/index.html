@@ -5,13 +5,16 @@
     <title>Stacked</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
     <!-- Loading Bootstrap -->
     <link href="UI/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="UI/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
     <link href="UI/css/flat-ui.css" rel="stylesheet">
-
+    <link href="UI/css/custom.css" rel="stylesheet">
     <link rel="UI/shortcut icon" href="images/favicon.ico">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
@@ -20,20 +23,95 @@
     <![endif]-->
   </head>
   <body>
-    <h1 class="h1" style="font-size: 142px !important; text-align: center;">Stacked</h1>
+    <h1 class="h1" style="font-size: 180px !important; text-align: center; font-weight: normal;">Stacked</h1>
+    <h6 class="h6" style="text-align: center; margin-top: -10px; margin-bottom: 35px">Find questions to answer on <a href="http://stackoverflow.com/">Stack Overflow</a></h6>
     <div class="container">
-        <div class="control-group huge">
-            <div class="input-append" style="width: 90%;">
-                <input class="span2" type="text" placeholder="User ID" style="display: inline-block; margin: 0 auto; width: 95%; height: 50px; font-size: 44px; line-height: 49px;" id="user">
-                <button class="btn btn-huge" type="button" id="submit" style="height: 50px; padding: 28px 30px 46px;"><span class="fui-search" style="height: 50px;"></span></button>
-            </div>
+<!-- <div class="row">
+  <div class="control-group span12">
+    <input type="text" class="span12" placeholder="With icon" />
+    <i class="input-icon fui-search"></i>
+  </div>
+</div> -->
+<div class="row">
+  <div class="control-group span12">
+    <input type="text" class="span12" placeholder="Username or ID" style="
+    min-height: 86px;
+    margin-bottom: 10px;
+    font-size: 50px;
+    line-height: 60px;
+" id='#user'>
+    <i class="input-icon fui-search" style="
+    font-size: 50px;
+    top: 35px;
+    right: 16px;
+    cursor: pointer;
+" id="submit"></i>
+  </div>
+</div>
+        <div id="template" style="display: none">
+            <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px;">
+                <div class="row">
+                    <div class="span2">
+                        <div class="row">
+                            <div class="span2 match" style="font-size: 50px; line-height: 50px">50</div>
+                        </div>
+                        <div class="row">
+                            <div class="span2" style="font-size: 14px">match</div>
+                        </div>
+                    </div>
+                    <div class="span2">
+                        <div class="row">
+                            <div class="span2 glory" style="font-size: 50px; line-height: 50px">50</div>
+                            <div class="span2" style="font-size: 14px">glory</div>
+                        </div>
+                    </div>
+                    <div class="span7 question-title" style="text-align: left">Twitter bootstrap: Why .row or .row-fluid does not have height?</div>
+                </div>
+            </a>
         </div>
-        <img src="UI/images/loading.gif" id="loader" style="display: block; margin: auto;">
-        <table class="table table-hover table-striped" id="results" style="font-size: 22px; width: 100%;">
-        </table>
+
+
+<!-- 
+        <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px; display: none;">
+            <div class="row">
+                <div class="span2">
+                    <div class="row">
+                        <div class="span2" style="font-size: 50px; line-height: 50px">50</div>
+                    </div>
+                    <div class="row">
+                        <div class="span2" style="font-size: 14px">match</div>
+                    </div>
+                </div>
+                <div class="span2">
+                    <div class="row">
+                        <div class="span2" style="font-size: 50px; line-height: 50px">50</div>
+                        <div class="span2" style="font-size: 14px">glory</div>
+                    </div>
+                </div>
+                <div class="span7" style="text-align: left">Sharing httpsession between themes and portlet in different portlet application</div>
+            </div>
+        </a>
+        <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px;">
+            <div class="row">
+                <div class="span2">
+                    <div class="row">
+                        <div class="span2" style="font-size: 50px; line-height: 50px">50</div>
+                    </div>
+                    <div class="row">
+                        <div class="span2" style="font-size: 14px">match</div>
+                    </div>
+                </div>
+                <div class="span2">
+                    <div class="row">
+                        <div class="span2" style="font-size: 50px; line-height: 50px">50</div>
+                        <div class="span2" style="font-size: 14px">glory</div>
+                    </div>
+                </div>
+                <div class="span7" style="text-align: left">Tic Tac Toe AI Bugs</div>
+            </div>
+        </a> -->
     </div>
     <!-- /.container -->
-
 
     <!-- Load JS here for greater good =============================-->
     <script src="UI/js/jquery-1.8.3.min.js"></script>
@@ -54,28 +132,50 @@
             $('#results').hide();
 
             var display_questions = function(data) {
-                $('#results').empty();
-                $('#loader').hide();
-                $('#results').show();
-                $('#results').append('<tr><th>Score</th><th>Votes</th><th>Answers</th><th>Views</th><th>Title</th><tr>')
                 var recs = data.result;
                 $.each(recs, function(index, elt) {
-                    var score   = '<td style="font-size: 44px; vertical-align: middle">' + (100*elt[1]).toString().substring(0,2) + '</td>'
-                    var title   = '<td style="font-size: 22px; vertical-align: middle">' + '<a href=' + elt[0].link + '>' + elt[0].title + '</a></td>';
-                    var views   = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].view_count + '</td>';
-                    var votes   = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].score + '</td>';
-                    var answers = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].answer_count + '</td>';
+                    var template = $('#template').clone();
 
-                    var row = '<tr style="cursor: pointer">' + score + votes + answers + views + title + '</tr>';
-                    $('#results').append(row);
+                    var match = (100*elt[1]).toString().substring(0,2);
+                    var glory = elt[0].view_count;
+                    var title = elt[0].title;
+                    var link = elt[0].link;
 
+                    template.find('.match').text(match);
+                    template.find('.glory').text(glory);
+                    template.find('.question-title').html(title)
+                    template.find('a').attr('href', link);
+
+                    template.hide();
+                    $('.container').append(template);
+                    template.delay(100*index).fadeIn(400);
                 });
-                $('tr').click(function() {
-                    var link = $(this).find('td a').attr('href');
-                    window.open(link);
-                }).hover( function() {
-                    $(this).toggleClass('hover');
-                });                    
+
+
+
+                // alert($('#template').clone());
+                // $('#results').empty();
+                // $('#loader').hide();
+                // $('#results').show();
+                // $('#results').append('<tr><th>Score</th><th>Votes</th><th>Answers</th><th>Views</th><th>Title</th><tr>')
+                // var recs = data.result;
+                // $.each(recs, function(index, elt) {
+                //     var score   = '<td style="font-size: 44px; vertical-align: middle">' + (100*elt[1]).toString().substring(0,2) + '</td>'
+                //     var title   = '<td style="font-size: 22px; vertical-align: middle">' + '<a href=' + elt[0].link + '>' + elt[0].title + '</a></td>';
+                //     var views   = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].view_count + '</td>';
+                //     var votes   = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].score + '</td>';
+                //     var answers = '<td style="font-size: 44px; vertical-align: middle">' + elt[0].answer_count + '</td>';
+
+                //     var row = '<tr style="cursor: pointer">' + score + votes + answers + views + title + '</tr>';
+                //     $('#results').append(row);
+
+                // });
+                // $('tr').click(function() {
+                //     var link = $(this).find('td a').attr('href');
+                //     window.open(link);
+                // }).hover( function() {
+                //     $(this).toggleClass('hover');
+                // });                    
             }
 
             $('#submit').click(function() {
@@ -87,3 +187,16 @@
     </script>
   </body>
 </html>
+
+<!--             <table>
+                <tr>
+                    <td width="100px"><div style="font-size: 50px">50</div><p>Match</p></td>
+                    <td width="100px"><p style="font-size: 50px">70</p><p>Glory</p></td>
+                    <td style="text-align: left; padding-left: 30px">This is the text that will go with the question. It will typically be very, very long.</td>
+                </tr>
+            </table> -->
+
+
+<!--         <img src="UI/images/loading.gif" id="loader" style="display: block; margin: auto;">
+        <table class="table table-hover table-bordered" id="results" style="font-size: 22px; width: 100%;">
+        </table> -->

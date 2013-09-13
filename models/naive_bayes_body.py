@@ -61,6 +61,7 @@ class NaiveBayesBody(Model):
         return accuracy_per_user
 
     def extract_body_words(self, question):
+        print question
         body = question['body']
         word_list = tp.pull_stop_words(tp.simplify(tp.strip_tags(body)))
         return dict((w,1) for w in word_list)

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Stacked</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,131 +17,145 @@
     <link href="UI/css/custom.css" rel="stylesheet">
     <link rel="UI/shortcut icon" href="images/favicon.ico">
 
+    <!-- Font Awesome -->
+    <link href="UI/fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
-    <![endif]-->
+      <![endif]-->
   </head>
   <body>
-    
-    <h1 class="h1" style="font-size: 180px !important; text-align: center; font-weight: normal;">Stacked</h1>
-    <h6 class="h6" style="text-align: center; margin-top: -10px; margin-bottom: 35px">Find questions to answer on <a href="http://stackoverflow.com/">Stack Overflow</a></h6>
-    <div class="container">
-        <div class="row">
-            <div class="control-group span12">
-                <input type="text" class="span12" placeholder="Username or ID" style="
-                    min-height: 86px;
-                    margin-bottom: 10px;
-                    font-size: 50px;
-                    line-height: 60px;
-                    " id='#user'>
-                <i class="input-icon fui-search" style="
-                    font-size: 50px;
-                    top: 35px;
-                    right: 16px;
-                    cursor: pointer;
-                    " id="submit"></i>
+    <div id="master-contain">
+        <div id="all-but-footer">
+            <h1 class="h1" style="font-size: 180px !important; text-align: center; font-weight: normal;">Stacked</h1>
+            <h6 class="h6" style="text-align: center; margin-top: -10px; margin-bottom: 35px">Find questions to answer on <a href="http://stackoverflow.com/">Stack Overflow</a></h6>
+<!--             <div class="container">
+                <div class="row" style="z-index: 2">
+                    <class="span12">
+                    <img src="UI/images/15.gif"></img>
+                    </class>
+                </div>
+            </div> -->
+            <div class="container main">
+                <div class="row">
+                    <div class="control-group span12">
+                        <input type="text" class="span12" placeholder="Username or ID" style="
+                        min-height: 86px;
+                        margin-bottom: 10px;
+                        font-size: 50px;
+                        line-height: 60px;
+                        text-indent: 16px;
+                        " id='user'>
+                        <i class="input-icon fui-search" style="
+                        font-size: 50px;
+                        top: 35px;
+                        right: 16px;
+                        cursor: pointer;
+                        " id="submit"></i>
+                    </div>
+                </div>
+                <div id="template" style="display: none">
+                    <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px;">
+                        <div class="row">
+                            <div class="span2">
+                                <div class="row">
+                                    <div class="span2 match" style="font-size: 50px; line-height: 50px">50</div>
+                                </div>
+                                <div class="row">
+                                    <div class="span2" style="font-size: 14px">match</div>
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <div class="row">
+                                    <div class="span2 glory" style="font-size: 50px; line-height: 50px">50</div>
+                                    <div class="span2" style="font-size: 14px">glory</div>
+                                </div>
+                            </div>
+                            <div class="span7 question-title" style="text-align: left">Twitter bootstrap: Why .row or .row-fluid does not have height?</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- /.container -->
+
+            <!-- Load JS here for greater good =============================-->
+            <script src="UI/js/jquery-1.8.3.min.js"></script>
+            <script src="UI/js/jquery-ui-1.10.3.custom.min.js"></script>
+            <script src="UI/js/jquery.ui.touch-punch.min.js"></script>
+            <script src="UI/js/bootstrap.min.js"></script>
+            <script src="UI/js/bootstrap-select.js"></script>
+            <script src="UI/js/bootstrap-switch.js"></script>
+            <script src="UI/js/flatui-checkbox.js"></script>
+            <script src="UI/js/flatui-radio.js"></script>
+            <script src="UI/js/jquery.tagsinput.js"></script>
+            <script src="UI/js/jquery.placeholder.js"></script>
+            <script src="UI/js/jquery.stacktable.js"></script>
+            <script type="text/javascript">
+            $(document).ready(function() {
+                var display_questions = function(data) {
+                    
+                    $('#user').animate({backgroundColor: 'white'}, 'slow', function() {
+                        $('#user').css('border', '');
+                        $('#submit').show();
+                    });
+
+                    var recs = data.result;
+                    $.each(recs, function(index, elt) {
+                        var template = $('#template').clone();
+
+                        var match = (100*elt[1]).toString().substring(0,2);
+                        var glory = elt[0].view_count;
+                        var title = elt[0].title;
+                        var link = elt[0].link;
+
+                        template.find('.match').text(match);
+                        template.find('.glory').text(glory);
+                        template.find('.question-title').html(title)
+                        template.find('a').attr('href', link);
+
+                        template.hide();
+                        $('.main').append(template);
+                        template.delay(100*index).fadeIn(400);
+                    });                 
+                }
+
+                $('#submit').click(function() {
+                    $('#submit').hide();
+                    $('#user').css('border', '2px solid #e67e22');
+                    $('#user').animate({backgroundColor: '#e67e22'}, 'slow');
+                    $.get('/recommended/' + $('#user').val())
+                    .done(display_questions);
+                });
+            });
+            </script>
+        </div>
+        <div id="footer" class="bottom-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="span2 brand">
+                        <a href="http://slaterstich.com/">Slater Stich</a>
+                    </div>
+
+                    <div class="span4 offset2">
+                        <ul class="bottom-links">
+                            <li><a href="#fakelink">How it works</a></li>
+                            <li><a href="#fakelink">Slides</a></li>
+                            <li><a href="http://newdatascientist.com/blog/">Blog</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="span2 offset2">
+                        <ul class="bottom-icons">
+                            <li><a href="https://github.com/sl8r000" class="icon-github-sign"></a></li>
+                            <li><a href="http://www.linkedin.com/pub/slater-stich/49/8a8/465" class="icon-linkedin-sign"></a></li>
+                            <li><a href="mailto:slater.stich@gmail.com" class="icon-envelope"></a></li>
+                            <li><a href="http://newdatascientist.com/blog/" class="icon-book"></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="template" style="display: none">
-            <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px;">
-                <div class="row">
-                    <div class="span2">
-                        <div class="row">
-                            <div class="span2 match" style="font-size: 50px; line-height: 50px">50</div>
-                        </div>
-                        <div class="row">
-                            <div class="span2" style="font-size: 14px">match</div>
-                        </div>
-                    </div>
-                    <div class="span2">
-                        <div class="row">
-                            <div class="span2 glory" style="font-size: 50px; line-height: 50px">50</div>
-                            <div class="span2" style="font-size: 14px">glory</div>
-                        </div>
-                    </div>
-                    <div class="span7 question-title" style="text-align: left">Twitter bootstrap: Why .row or .row-fluid does not have height?</div>
-                </div>
-            </a>
-        </div>
     </div>
-    <!-- /.container -->
-
-    <!-- Load JS here for greater good =============================-->
-    <script src="UI/js/jquery-1.8.3.min.js"></script>
-    <script src="UI/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="UI/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="UI/js/bootstrap.min.js"></script>
-    <script src="UI/js/bootstrap-select.js"></script>
-    <script src="UI/js/bootstrap-switch.js"></script>
-    <script src="UI/js/flatui-checkbox.js"></script>
-    <script src="UI/js/flatui-radio.js"></script>
-    <script src="UI/js/jquery.tagsinput.js"></script>
-    <script src="UI/js/jquery.placeholder.js"></script>
-    <script src="UI/js/jquery.stacktable.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-            $('#loader').hide();
-            $('#results').hide();
-
-            var display_questions = function(data) {
-                var recs = data.result;
-                $.each(recs, function(index, elt) {
-                    var template = $('#template').clone();
-
-                    var match = (100*elt[1]).toString().substring(0,2);
-                    var glory = elt[0].view_count;
-                    var title = elt[0].title;
-                    var link = elt[0].link;
-
-                    template.find('.match').text(match);
-                    template.find('.glory').text(glory);
-                    template.find('.question-title').html(title)
-                    template.find('a').attr('href', link);
-
-                    template.hide();
-                    $('.main').append(template);
-                    template.delay(100*index).fadeIn(400);
-                });                 
-            }
-
-            $('#submit').click(function() {
-                $('#loader').show();
-                $.get('/recommended/' + $('#user').val())
-                .done(display_questions);
-            });
-        });
-    </script>
-<div class="bottom-menu" style="width: 100%; position: fixed; height: 20px; bottom: 0">
-      <div class="container">
-        <div class="row">
-          <div class="span2 brand">
-            <a href="#fakelink" class="fui-flat"></a>
-          </div>
-
-          <div class="span8">
-            <ul class="bottom-links">
-              <li><a href="#fakelink">About Us</a></li>
-              <li><a href="#fakelink">Store</a></li>
-              <li class="active"><a href="#fakelink">Jobs</a></li>
-              <li><a href="#fakelink">Privacy</a></li>
-              <li><a href="#fakelink">Terms</a></li>
-              <li><a href="#fakelink">Follow Us</a></li>
-              <li><a href="#fakelink">Support</a></li>
-              <li><a href="#fakelink">Links</a></li>
-            </ul>
-          </div>
-
-          <div class="span2">
-            <ul class="bottom-icons">
-              <li><a href="#fakelink" class="fui-pinterest"></a></li>
-              <li><a href="#fakelink" class="fui-facebook"></a></li>
-              <li><a href="#fakelink" class="fui-twitter"></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+</body>
 </html>

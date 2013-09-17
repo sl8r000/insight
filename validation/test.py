@@ -35,6 +35,7 @@ if __name__ == '__main__':
     bayes_title_results = []
     bagging_results = []
     for i in range(args.num_repetitions):
+        print i
         training_data = dict()
         testing_data = dict()
 
@@ -45,10 +46,10 @@ if __name__ == '__main__':
             training_data[user_id] = records[:args.split]
             testing_data[user_id] = records[args.split:]
 
-        bagging = SKLearnTextBagging(classifier_class_list=[RandomForestClassifier, AdaBoostClassifier, SVC], text_source='title')
-        bagging.train(training_data)
-        these_bagging_results = bagging.test(testing_data, top_number=args.top)
-        bagging_results.append(these_bagging_results)
+        # bagging = SKLearnTextBagging(classifier_class_list=[RandomForestClassifier, AdaBoostClassifier, SVC], text_source='title')
+        # bagging.train(training_data)
+        # these_bagging_results = bagging.test(testing_data, top_number=args.top)
+        # bagging_results.append(these_bagging_results)
 
         bayes_title = NaiveBayesTitle()
         bayes_title.train(training_data)
@@ -65,15 +66,15 @@ if __name__ == '__main__':
         these_tags_results = tags.test(testing_data, top_number=args.top)
         tags_results.append(these_tags_results)
 
-        random_forest = SKLearnBagOfWords(RandomForestClassifier)
-        random_forest.train(training_data)
-        these_random_forest_results = random_forest.test(testing_data, top_number=args.top)
-        random_forest_results.append(these_random_forest_results)
+        # random_forest = SKLearnBagOfWords(RandomForestClassifier)
+        # random_forest.train(training_data)
+        # these_random_forest_results = random_forest.test(testing_data, top_number=args.top)
+        # random_forest_results.append(these_random_forest_results)
 
-        adaboost = SKLearnBagOfWords(AdaBoostClassifier)
-        adaboost.train(training_data)
-        these_adaboost_results = adaboost.test(testing_data, top_number=args.top)
-        adaboost_results.append(these_adaboost_results)
+        # adaboost = SKLearnBagOfWords(AdaBoostClassifier)
+        # adaboost.train(training_data)
+        # these_adaboost_results = adaboost.test(testing_data, top_number=args.top)
+        # adaboost_results.append(these_adaboost_results)
 
         randomness = Randomness()
         randomness.train(training_data)
@@ -81,8 +82,11 @@ if __name__ == '__main__':
         randomness_results.append(these_randomness_results)
 
 
-results = [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results, bayes_title_results, bagging_results]
-keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomness', 'bayes_title', 'bagging']
+# results = [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results, bayes_title_results, bagging_results]
+# keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomness', 'bayes_title', 'bagging']
+
+results = [bayes_results, bayes_title_results, tags_results, randomness_results]
+keys = ['bayes', 'bayes_title', 'tags', 'randomness']
 
 individual_frames = [DataFrame(x) for x in results]
 total_frame = pd.concat(individual_frames, axis=1, keys=keys)

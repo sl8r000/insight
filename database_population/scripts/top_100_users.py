@@ -15,8 +15,7 @@ if __name__ == '__main__':
                                                                      key=settings.STACK_EXCHANGE_KEY)
 
     top_100_users = stack_overflow_client.users.get(pagesize=100, filter=USER_FILTER)
-    top_100_users = top_100_users[-40:-30]
-    top_100_users = [x for x in top_100_users if x['user_id'] not in [135152, 1288, 12960, 18771, 33213, 73070, 115730, 2988, 103167]]
+    top_100_users = top_100_users[20:50]
     logger.info('Getting questions for the users {}'.format(top_100_users))
 
     for user in top_100_users:

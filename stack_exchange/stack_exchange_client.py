@@ -305,6 +305,10 @@ class StackExchangeClient(object):
     def search(self):
         return Search(self.url + 'search/', self.queryvars)
 
+    @property
+    def tags(self):
+        return Tags(self.url + 'tags/', self.queryvars)
+
 if __name__ == '__main__':
     client_id = 1962
     key = 'IHEAzrM4kaVEBHGcLOP)tQ(('

@@ -17,6 +17,6 @@ def write_questions(database_client, questions, collection_name, db_name=DEFAULT
     database_client[db_name][collection_name].insert(questions)
 
 
-def populate_database(stack_overflow_client, database_client, user_id, limit):
-    questions = get_questions(stack_overflow_client, user_id, limit)
-    write_questions(database_client, questions, str(user_id))
+def populate_database(stack_overflow_client, database_client, tag, limit):
+    questions = get_questions(stack_overflow_client, tag, limit)
+    write_questions(database_client, questions, str(tag))

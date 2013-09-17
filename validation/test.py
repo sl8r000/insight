@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
 
 results = [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results, bayes_title_results, bagging_results]
-keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomnes', 'bayes_title', 'bagging']
+keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomness', 'bayes_title', 'bagging']
 
 individual_frames = [DataFrame(x) for x in results]
 total_frame = pd.concat(individual_frames, axis=1, keys=keys)

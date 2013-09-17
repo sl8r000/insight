@@ -18,7 +18,7 @@ def fetch_dataset(stack_overflow_client):
         all_answers = user_answers_1 + user_answers_2 + random_answers_1 + random_answers_2
 
         question_ids = [answer['question_id'] for answer in all_answers]
-        accepted_question_ids = [answer['question_id'] for answer in user_answers_1 + user_answers_2 if answer['is_accepted']]
+        accepted_question_ids = [answer['question_id'] for answer in user_answers_1 + user_answers_2]
 
         questions_1 = stack_overflow_client.questions.ids(question_ids[:100]).get(filter='withbody', pagesize=100)
         questions_2 = stack_overflow_client.questions.ids(question_ids[100:200]).get(filter='withbody', pagesize=100)

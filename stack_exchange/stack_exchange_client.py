@@ -1,5 +1,6 @@
 import requests
-
+import time
+from database_population.log import logger
 
 class BaseHTTPClient(object):
     def __init__(self, url, queryvars):
@@ -11,7 +12,18 @@ class BaseHTTPClient(object):
         all_params = dict(self.queryvars.items() + params.items())
         response = requests.get(self.url, params=all_params)
         response.raise_for_status()
-        return response.json()['items']
+
+        response = response.json(strict=False)
+        if 'backoff' in response:
+            print "Backing off for {} seconds".format(response['backoff'])
+            time.sleep(response['backoff'])
+
+        logger.debug('Quota Remaining: {}'.format(response['quota_remaining']))
+
+        additional_information = '\n'.join(['{}={}'.format(key, value) for key, value in response.items() if key != 'items'])
+        logger.debug('Additional Information:\n{}'.format(additional_information))
+
+        return response['items']
 
 
 class AnswersIds(BaseHTTPClient):

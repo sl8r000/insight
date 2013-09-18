@@ -15,7 +15,7 @@ if __name__ == '__main__':
                                                                      key=settings.STACK_EXCHANGE_KEY)
 
     top_100_users = stack_overflow_client.users.get(pagesize=100, filter=USER_FILTER)
-    top_100_users = top_100_users[20:50]
+    top_100_users = top_100_users[47:50]
     logger.info('Getting questions for the users {}'.format(top_100_users))
 
     for user in top_100_users:

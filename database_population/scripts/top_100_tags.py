@@ -1,6 +1,7 @@
 import pymongo
 import time
 
+from site import config
 from database_population import settings
 from database_population.methods import tagged_questions
 from database_population.log import logger
@@ -14,8 +15,11 @@ if __name__ == '__main__':
                                                                      client_id=settings.STACK_EXCHANGE_CLIENT_ID,
                                                                      key=settings.STACK_EXCHANGE_KEY)
 
-    top_100_tags = stack_overflow_client.tags.get(pagesize=100)
-    top_100_tags = [x['name'] for x in top_100_tags]
+    extant_tags = set(mongo_client.tagged_questions.collection_names())
+    all_tags = set(sum(config.user_id_to_tags.keys(), []))
+    top_100_tags = list(all_tags - extant_tags)
+    print top_100_tags
+    raise Exception()
 
     logger.info('Getting questions for the tags {}'.format(top_100_tags))
 

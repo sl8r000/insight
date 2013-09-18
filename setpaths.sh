@@ -1,1 +1,1 @@
-export PYTHONPATH=$PYTHONPATH:$(git rev-parse --show-toplevel)
+export PYTHONPATH=$(git rev-parse --show-toplevel)

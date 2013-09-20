@@ -59,13 +59,12 @@
                 <div id="response_landing">
                     <p style="text-align: center">Try entering a high-reputation user, such as Jon Skeet, Darin Dimitrov, BalusC, or Marc Gravell</p>
                 </div>
-                <div id="template" style="display: none">
-<!--                 <div id="template">                    
- -->                    <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px; position: relative">
+                <div id="template" style="display: none">                   
+                    <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px; position: relative">
                         <div class="row">
                             <div class="span2">
                                 <div class="row">
-                                    <div class="span2 match" style="font-size: 50px; line-height: 50px">50</div>
+                                    <div class="span2 match" style="font-size: 50px; line-height: 50px"></div>
                                 </div>
                                 <div class="row">
                                     <div class="span2" style="font-size: 14px">match %</div>
@@ -73,20 +72,19 @@
                             </div>
                             <div class="span2">
                                 <div class="row">
-                                    <div class="span2 glory" style="font-size: 50px; line-height: 50px">50</div>
+                                    <div class="span2 glory" style="font-size: 50px; line-height: 50px"></div>
                                     <div class="span2" style="font-size: 14px">views</div>
                                 </div>
                             </div>
                             <div class ="span 7">
                                 <div class="row">
-                                    <div class="span7 question-title" style="text-align: left">Twitter bootstrap: Why .row or .row-fluid does not have height?</div>
+                                    <div class="span7 question-title" style="text-align: left"></div>
                                 </div>
                                     <div class="row tag-target" style="
                                         position: absolute;
                                         bottom: 20px;
                                         right: 15px;
                                         ">
-                                    <span class="label">Default</span><span class="label">Default</span>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +93,7 @@
             </div>
             <!-- /.container -->
 
-            <!-- Load JS here for greater good =============================-->
+            <!-- Load the various JS libraries =============================-->
             <script src="UI/js/jquery-1.8.3.min.js"></script>
             <script src="UI/js/jquery-ui-1.10.3.custom.min.js"></script>
             <script src="UI/js/jquery.ui.touch-punch.min.js"></script>
@@ -107,66 +105,9 @@
             <script src="UI/js/jquery.tagsinput.js"></script>
             <script src="UI/js/jquery.placeholder.js"></script>
             <script src="UI/js/jquery.stacktable.js"></script>
-            <script type="text/javascript">
-            $(document).ready(function() {
-                var display_questions = function(data) {
-                    
-                    $('#ajax_loader').hide();
-                    $('#user').animate({backgroundColor: 'white'}, 'slow', function() {
-                        $('#user').css('border', '');
-                        $('#submit').show();
-                    });
 
-                    var recs = data.result;
-                    $.each(recs, function(index, elt) {
-                        var template = $('#template').clone();
-
-                        var match = Math.round(100*elt[1])
-                        // var match = (100*elt[1]).toString().substring(0,2);
-                        var glory = elt[0].view_count;
-                        var tags = elt[0].tags;
-                        var title = elt[0].title;
-                        var link = elt[0].link;
-
-                        var tag_spans = new Array();
-                        for (var i = 0; i < tags.length; i++) {
-                            tag_spans[i] = '<span class="label">' + tags[i] + '</span>'
-                        }
-                        var tag_row = tag_spans.join('')
-
-                        template.find('.match').text(match);
-                        template.find('.glory').text(glory);
-                        template.find('.question-title').html(title);
-                        template.find('a').attr('href', link);
-                        template.find('.tag-target').html(tag_row);
-
-                        template.hide();
-                        $('#response_landing').append(template);
-                        template.delay(100*index).fadeIn(400);
-                    });                 
-                }
-
-                var submit_request = function() {
-                    $('#response_landing').empty();
-                    $('#submit').hide();
-                    $('#user').css('border', '2px solid #e67e22');
-                    $("#ajax_loader").fadeIn(); 
-                    $('#user').animate({backgroundColor: '#e67e22'}, 'slow');
-                    $.get('/recommended/' + $('#user').val())
-                    .done(display_questions);
-                }
-
-                $(document).keypress(function(e) {
-                    if(e.which == 13) {
-                        submit_request();
-                    }
-                });
-
-                $('#submit').click(function() {
-                    submit_request();
-                });
-            });
-            </script>
+            <!-- Load the primary script ================================-->
+            <script type="text/javascript" src="UI/js/control.js"></script>
         </div>
         <div id="footer" class="bottom-menu">
             <div class="container">

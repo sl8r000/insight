@@ -19,4 +19,5 @@ def write_questions(database_client, questions, collection_name, db_name=DEFAULT
 
 def populate_database(stack_overflow_client, database_client, tag, limit):
     questions = get_questions(stack_overflow_client, tag, limit)
+    tag = tag.replace('.', '__')
     write_questions(database_client, questions, str(tag))

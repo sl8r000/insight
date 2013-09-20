@@ -133,6 +133,14 @@ class TagsIds(BaseHTTPClient):
     def wikis(self):
         return BaseHTTPClient(self.url + 'wikis/', self.queryvars)
 
+    @property
+    def top_askers(self):
+        return BaseHTTPClient(self.url + 'top-askers/all_time', self.queryvars)
+
+    @property
+    def top_answerers(self):
+        return BaseHTTPClient(self.url + 'top-answerers/all_time', self.queryvars)
+
 class Tags(BaseHTTPClient):
 
     def ids(self, id_or_ids):

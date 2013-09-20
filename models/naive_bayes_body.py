@@ -44,7 +44,7 @@ class NaiveBayesBody(Model):
 
     def test(self, dataset, top_number=10):
         accuracy_per_user = dict()
-        for user_id in dataset:
+        for user_id in dataset: 
             question_bags = [self.extract_body_words(testing_pair['question']) for testing_pair in dataset[user_id]]
             probabilities = self._user_models[user_id].batch_prob_classify(question_bags)
 
@@ -62,7 +62,7 @@ class NaiveBayesBody(Model):
 
     def extract_body_words(self, question):
         if 'body' not in question:
-            return dict()
+            return {}
         body = question['body']
         word_list = tp.pull_stop_words(tp.simplify(tp.strip_tags(body)))
         return dict((w,1) for w in word_list)

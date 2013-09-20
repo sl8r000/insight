@@ -1,8 +1,8 @@
 from flask import Flask, render_template, jsonify
+import pickle
 
 import config
-from data_sources.live_source import LiveSource
-from models.naive_bayes_body import NaiveBayesBody
+from stack_exchange.stack_exchange_client import StackExchangeClient
 import util
 
 app = Flask(__name__, template_folder='UI', static_folder='UI')
@@ -19,11 +19,18 @@ def page_not_found(error):
 def give_recommendations(user_id):
     user_id = util.lookup_user_id(user_id)
 
-    model = NaiveBayesBody()
-    data_source = LiveSource.from_credentials(client_id=config.STACK_EXCHANGE_CLIENT_ID, 
-                                                                   key=config.STACK_EXCHANGE_KEY)
+    user_classifier_path = '../cache/{}/classifier.pkl'.format(user_id)
+    with open(user_classifier_path) as stream:
+        classifier = pickle.load(stream)
 
-    recommendations = model.recommend(data_source, user_id=user_id, number=5)
+    user_tags = util.lookup_user_tags(user_id)
+
+    client = StackExchangeClient(site='stackoverflow', client_id=config.STACK_EXCHANGE_KEY, key=config.STACK_EXCHANGE_KEY)
+    candidate_questions = []
+    for tag in user_tags:
+        candidate_questions.extend(client.questions.get(order='desc', sort='creation', tagged=tag, filter='withbody'))
+
+    recommendations = classifier.get_recommendations(candidate_questions, 5)
     return jsonify({'result': recommendations})
 
 if __name__ == '__main__':

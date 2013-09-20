@@ -28,11 +28,19 @@
   <body>
     <div id="master-contain">
         <div id="all-but-footer">
-            <h1 class="h1" style="font-size: 180px !important; text-align: center; font-weight: normal;">Top of the Stack</h1>
-            <h6 class="h6" style="text-align: center; margin-top: -10px; margin-bottom: 35px">Find questions to answer on <a href="http://stackoverflow.com/">Stack Overflow</a></h6>
+            <h1 class="h1" style="font-size: 180px !important; text-align: center; font-weight: normal;">Stacked</h1>
+            <h6 class="h6" style="text-align: center; margin-top: -10px; margin-bottom: 35px">Questions you can answer on <a href="http://stackoverflow.com/">Stack Overflow</a></h6>
             <div class="container main">
                 <div class="row">
                     <div class="control-group span12">
+<img src="UI/images/image_518523.gif" style="
+    display: inline-block;
+    margin-left: 47.5%;
+    margin-top: 20px;
+    position: absolute;
+    z-index: 2;
+    display: none
+" id="ajax_loader">
                         <input type="text" class="span12" placeholder="Username or ID" style="
                         min-height: 86px;
                         margin-bottom: 10px;
@@ -48,24 +56,39 @@
                         " id="submit"></i>
                     </div>
                 </div>
+                <div id="response_landing">
+                    <p style="text-align: center">Try entering a high-reputation user, such as Jon Skeet, Darin Dimitrov, BalusC, or Marc Gravell</p>
+                </div>
                 <div id="template" style="display: none">
-                    <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px;">
+<!--                 <div id="template">                    
+ -->                    <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px; position: relative">
                         <div class="row">
                             <div class="span2">
                                 <div class="row">
                                     <div class="span2 match" style="font-size: 50px; line-height: 50px">50</div>
                                 </div>
                                 <div class="row">
-                                    <div class="span2" style="font-size: 14px">match</div>
+                                    <div class="span2" style="font-size: 14px">match %</div>
                                 </div>
                             </div>
                             <div class="span2">
                                 <div class="row">
                                     <div class="span2 glory" style="font-size: 50px; line-height: 50px">50</div>
-                                    <div class="span2" style="font-size: 14px">glory</div>
+                                    <div class="span2" style="font-size: 14px">views</div>
                                 </div>
                             </div>
-                            <div class="span7 question-title" style="text-align: left">Twitter bootstrap: Why .row or .row-fluid does not have height?</div>
+                            <div class ="span 7">
+                                <div class="row">
+                                    <div class="span7 question-title" style="text-align: left">Twitter bootstrap: Why .row or .row-fluid does not have height?</div>
+                                </div>
+                                    <div class="row tag-target" style="
+                                        position: absolute;
+                                        bottom: 20px;
+                                        right: 15px;
+                                        ">
+                                    <span class="label">Default</span><span class="label">Default</span>
+                                </div>
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -88,6 +111,7 @@
             $(document).ready(function() {
                 var display_questions = function(data) {
                     
+                    $('#ajax_loader').hide();
                     $('#user').animate({backgroundColor: 'white'}, 'slow', function() {
                         $('#user').css('border', '');
                         $('#submit').show();
@@ -97,28 +121,49 @@
                     $.each(recs, function(index, elt) {
                         var template = $('#template').clone();
 
-                        var match = (100*elt[1]).toString().substring(0,2);
+                        var match = Math.round(100*elt[1])
+                        // var match = (100*elt[1]).toString().substring(0,2);
                         var glory = elt[0].view_count;
+                        var tags = elt[0].tags;
                         var title = elt[0].title;
                         var link = elt[0].link;
 
+                        var tag_spans = new Array();
+                        for (var i = 0; i < tags.length; i++) {
+                            tag_spans[i] = '<span class="label">' + tags[i] + '</span>'
+                        }
+                        var tag_row = tag_spans.join('')
+
                         template.find('.match').text(match);
                         template.find('.glory').text(glory);
-                        template.find('.question-title').html(title)
+                        template.find('.question-title').html(title);
                         template.find('a').attr('href', link);
+                        template.find('.tag-target').html(tag_row);
 
                         template.hide();
-                        $('.main').append(template);
+                        $('#response_landing').append(template);
                         template.delay(100*index).fadeIn(400);
                     });                 
                 }
 
-                $('#submit').click(function() {
+                var submit_request = function() {
+                    $('#response_landing').empty();
                     $('#submit').hide();
                     $('#user').css('border', '2px solid #e67e22');
+                    $("#ajax_loader").fadeIn(); 
                     $('#user').animate({backgroundColor: '#e67e22'}, 'slow');
                     $.get('/recommended/' + $('#user').val())
                     .done(display_questions);
+                }
+
+                $(document).keypress(function(e) {
+                    if(e.which == 13) {
+                        submit_request();
+                    }
+                });
+
+                $('#submit').click(function() {
+                    submit_request();
                 });
             });
             </script>

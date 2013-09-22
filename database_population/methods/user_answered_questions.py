@@ -1,8 +1,4 @@
-import math
-import time
-
 from database_population.log import logger
-
 
 PAGESIZE = 100
 QUESTION_FILTER = '!.JEoc0rKopGMTGBW1K3m_MjFMiLgo'
@@ -16,7 +12,6 @@ def get_questions(stack_overflow_client, user_id, limit):
     all_question_ids = []
     last_page = limit/PAGESIZE + 1
     for page in range(1, last_page):
-        time.sleep(1) # To avoid throttling
         raw_answers = stack_overflow_client.users.ids(user_id).answers.get(pagesize=PAGESIZE, page=page, filter=ANSWER_FILTER)
         question_ids = [answer['question_id'] for answer in raw_answers]
         all_question_ids.extend(question_ids)
@@ -27,7 +22,6 @@ def get_questions(stack_overflow_client, user_id, limit):
         chunk_start, chunk_end = index, index + PAGESIZE
         chunk = all_question_ids[chunk_start:chunk_end]
 
-        time.sleep(1) # To avoid throttling
         questions.extend(stack_overflow_client.questions.ids(chunk).get(pagesize=PAGESIZE, filter=QUESTION_FILTER))
         logger.debug('Getting Questions: Finished with chunk [{}:{}]'.format(chunk_start, chunk_end))
 

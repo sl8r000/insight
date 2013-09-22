@@ -15,7 +15,8 @@ if __name__ == '__main__':
                                                                      key=settings.STACK_EXCHANGE_KEY)
 
     top_100_users = stack_overflow_client.users.get(pagesize=100, filter=USER_FILTER)
-    top_100_users = top_100_users[47:50]
+    extant_users = set(list(int(x) for x in mongo_client.user_questions.collection_names() if 'index' not in x))
+    top_100_users = [user for user in top_100_users if user['user_id'] not in extant_users]
     logger.info('Getting questions for the users {}'.format(top_100_users))
 
     for user in top_100_users:

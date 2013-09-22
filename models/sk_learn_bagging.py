@@ -59,8 +59,6 @@ class SKLearnTextBagging(Model):
                     if this_model_vote == 1:
                         yes_votes += 1
 
-                # yes_percent = float(yes_votes) / len(self._user_model_lists[user_id])
-
                 triples.append((yes_votes, label, question['question_id']))
 
             triples.sort(key = lambda x: x[0], reverse=True)

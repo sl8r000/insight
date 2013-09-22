@@ -10,6 +10,22 @@ DEFAULT_STOP_WORDS = set('''a able about across after all almost also am among a
                             they this tis to too twas us wants was we were what when where which while 
                             who whom why will with would yet you your'''.split())
 
+STACK_OVERFLOW_WORDS = set(''''the i to a is and in it of this my at that have for with but on am can code 
+                            be not im so if how an as like when or do using from any would what me you want all 
+                            there are some get method use one file then which here just help trying need work will 
+                            problem ive know by does its now error thanks user function no each following way page
+                            data time where has working into after dont see other first something works out tried
+                            create however also could app new only up was same files them find should they doesnt
+                            example make add why change two class run table set about below line issue question
+                            object value try having cant please list right query application wrong anyone call fine
+                            access looks show been because doing we view getting input server through image return
+                            think than possible called able thank go sure seems program edit array second project 
+                            found these id string used still created message button between more someone good 
+                            database text output variable number script well point numbers device both even 
+                            display values date looking'''.split())
+
+
+
 
 def strip_tags(text):
     html = PyQuery(text)

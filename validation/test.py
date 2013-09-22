@@ -28,7 +28,7 @@ if __name__ == '__main__':
     with open(args.file_name) as stream:
         data = json.load(stream)
 
-    data = dict((k, data[k]) for k in data.keys()[:3])
+    data = dict((k, data[k]) for k in data.keys()[:5])
 
     bayes_results = []
     tags_results = []
@@ -60,10 +60,10 @@ if __name__ == '__main__':
         # these_bayes_title_results = bayes_title.test(testing_data, top_number=args.top)
         # bayes_title_results.append(these_bayes_title_results)
 
-        # bayes = NaiveBayesBody()
-        # bayes.train(training_data)
-        # these_bayes_results = bayes.test(testing_data, top_number=args.top)
-        # bayes_results.append(these_bayes_results)
+        bayes = NaiveBayesBody()
+        bayes.train(training_data)
+        these_bayes_results = bayes.test(testing_data, top_number=args.top)
+        bayes_results.append(these_bayes_results)
 
         combo = TaggedBayesCombo()
         combo.train(training_data)
@@ -97,8 +97,8 @@ if __name__ == '__main__':
 # results = [bayes_results, bayes_title_results, tags_results, randomness_results]
 # keys = ['bayes', 'bayes_title', 'tags', 'randomness']
 
-results = [combo_results]
-keys = ['combo']
+results = [combo_results, bayes_results]
+keys = ['combo', 'bayes']
 individual_frames = [DataFrame(x) for x in results]
 total_frame = pd.concat(individual_frames, axis=1, keys=keys)
 total_frame = total_frame.swaplevel(0, 1, axis=1)

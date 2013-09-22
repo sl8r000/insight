@@ -34,7 +34,6 @@ class NaiveBayesBody(Model):
 
     def extract_body_words(self, question):
         if 'body' not in question:
-            print 'Suspicious'
             return {}
         body = question['body']
         word_list = tp.pull_stop_words(tp.simplify(tp.strip_tags(body)))

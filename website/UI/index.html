@@ -28,19 +28,19 @@
   <body>
     <div id="master-contain">
         <div id="all-but-footer">
-            <h1 class="h1" style="font-size: 180px !important; text-align: center; font-weight: normal;">Stacked</h1>
+            <h1 class="h1" style="font-size: 130px !important; text-align: center; font-weight: normal;">Top <span style="font-size: 70px">of the</span> Stack</h1>
             <h6 class="h6" style="text-align: center; margin-top: -10px; margin-bottom: 35px">Questions you can answer on <a href="http://stackoverflow.com/">Stack Overflow</a></h6>
             <div class="container main">
                 <div class="row">
                     <div class="control-group span12">
-<img src="UI/images/image_518523.gif" style="
-    display: inline-block;
-    margin-left: 47.5%;
-    margin-top: 20px;
-    position: absolute;
-    z-index: 2;
-    display: none
-" id="ajax_loader">
+                        <img src="UI/images/image_518523.gif" style="
+                            display: inline-block;
+                            margin-left: 47.5%;
+                            margin-top: 20px;
+                            position: absolute;
+                            z-index: 2;
+                            display: none
+                        " id="ajax_loader">
                         <input type="text" class="span12" placeholder="Username or ID" style="
                         min-height: 86px;
                         margin-bottom: 10px;
@@ -56,20 +56,27 @@
                         " id="submit"></i>
                     </div>
                 </div>
-                <div id="response_landing">
-                    <p style="text-align: center">Try entering a high-reputation user, such as Jon Skeet, Darin Dimitrov, BalusC, or Marc Gravell</p>
+                    <div class="alert" style="display: none">
+                        <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+                        <h3>Oh No!</h3>
+                        <p>It looks like the username you entered wasn't found in the database!</p>
+                        <p>Right now, Top of the Stack only works for the 100 highest-reputation users on Stack Overflow. Try Jon Skeet, Darin Dimitrov, BalusC, or Marc Gravell.</p>   
+                        <button type="button" class="btn btn-primary btn-wide" data-dismiss="alert">Close</button>
+                    </div>
+                <div id="response_landing">                  
+                    <p style="text-align: center">Try entering a high-reputation user, such as <a href="#" class="easy-input">Jon Skeet</a>, <a href="#" class="easy-input">Darin Dimitrov</a>, <a href="#" class="easy-input">BalusC</a>, or <a href="#" class="easy-input">Marc Gravell</a></p>
                 </div>
-                <div id="template" style="display: none">                   
+                <div id="filtered_results" style="display: none">
+                <!-- <div id="filtered_results"> -->
+                    <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px; position: relative; background-color: #a65400" id="show-filtered">
+                        See lower-ranking results.
+                    </a>
+                </div>
+                <div id="filtered_results_landing" style="display: none">
+                </div>
+                <div id="template" style="display: none">
                     <a href="#fakelink" class="btn btn-huge btn-block btn-primary" style="margin-bottom: 20px; position: relative">
                         <div class="row">
-                            <div class="span2">
-                                <div class="row">
-                                    <div class="span2 match" style="font-size: 50px; line-height: 50px"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="span2" style="font-size: 14px">match %</div>
-                                </div>
-                            </div>
                             <div class="span2">
                                 <div class="row">
                                     <div class="span2 glory" style="font-size: 50px; line-height: 50px"></div>

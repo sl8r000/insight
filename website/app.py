@@ -28,9 +28,16 @@ def give_recommendations(user_id):
     client = StackExchangeClient(site='stackoverflow', client_id=config.STACK_EXCHANGE_KEY, key=config.STACK_EXCHANGE_KEY)
     candidate_questions = []
     for tag in user_tags:
-        candidate_questions.extend(client.questions.get(order='desc', sort='creation', tagged=tag, filter='withbody'))
+        candidate_questions.extend(client.questions.get(order='desc', sort='creation', tagged=tag, filter='!-MBjrdFL(r((hP1ak*y9uHYU*hy7OjR4M'))
 
-    recommendations = classifier.get_recommendations(candidate_questions, 5)
+    candidate_questions = sorted(candidate_questions, key=lambda x: x['question_id'])
+    unique_candidates = []
+    for index, elt in enumerate(candidate_questions):
+        if index > 0 and elt['question_id'] != candidate_questions[index-1]['question_id']:
+            if elt['score'] >= 0 and 'accepted_answer_id' not in elt:
+                unique_candidates.append(elt)
+
+    recommendations = classifier.get_recommendations(unique_candidates, 500)
     return jsonify({'result': recommendations})
 
 if __name__ == '__main__':

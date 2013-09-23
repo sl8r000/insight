@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     with open(args.file_name) as stream:
         data = json.load(stream)
-
-    data = dict((k, data[k]) for k in data.keys()[:5])
+        for user in data:
+            data[user] = [x for x in data[user] if 'body' in x['question']]
 
     bayes_results = []
     tags_results = []
@@ -50,55 +50,56 @@ if __name__ == '__main__':
             training_data[user_id] = records[:args.split]
             testing_data[user_id] = records[args.split:]
 
-        # bagging = SKLearnTextBagging(classifier_class_list=[RandomForestClassifier, AdaBoostClassifier, SVC], text_source='title')
-        # bagging.train(training_data)
-        # these_bagging_results = bagging.test(testing_data, top_number=args.top)
-        # bagging_results.append(these_bagging_results)
+        bagging = SKLearnTextBagging(classifier_class_list=[RandomForestClassifier, AdaBoostClassifier, SVC], text_source='title')
+        bagging.train(training_data)
+        these_bagging_results = bagging.test(testing_data, top_number=args.top)
+        bagging_results.append(these_bagging_results)
 
-        # bayes_title = NaiveBayesTitle()
-        # bayes_title.train(training_data)
-        # these_bayes_title_results = bayes_title.test(testing_data, top_number=args.top)
-        # bayes_title_results.append(these_bayes_title_results)
+        bayes_title = NaiveBayesTitle()
+        bayes_title.train(training_data)
+        these_bayes_title_results = bayes_title.test(testing_data, top_number=args.top)
+        bayes_title_results.append(these_bayes_title_results)
 
         bayes = NaiveBayesBody()
         bayes.train(training_data)
         these_bayes_results = bayes.test(testing_data, top_number=args.top)
         bayes_results.append(these_bayes_results)
 
-        combo = TaggedBayesCombo()
-        combo.train(training_data)
-        these_combo_results = combo.test(testing_data, top_number=args.top)
-        combo_results.append(these_combo_results)
+        # combo = TaggedBayesCombo()
+        # combo.train(training_data)
+        # these_combo_results = combo.test(testing_data, top_number=args.top)
+        # combo_results.append(these_combo_results)
 
-        # tags = TagsBaseline()
-        # tags.train(training_data)
-        # these_tags_results = tags.test(testing_data, top_number=args.top)
-        # tags_results.append(these_tags_results)
+        tags = TagsBaseline()
+        tags.train(training_data)
+        these_tags_results = tags.test(testing_data, top_number=args.top)
+        tags_results.append(these_tags_results)
 
-        # random_forest = SKLearnBagOfWords(RandomForestClassifier)
-        # random_forest.train(training_data)
-        # these_random_forest_results = random_forest.test(testing_data, top_number=args.top)
-        # random_forest_results.append(these_random_forest_results)
+        random_forest = SKLearnBagOfWords(RandomForestClassifier)
+        random_forest.train(training_data)
+        these_random_forest_results = random_forest.test(testing_data, top_number=args.top)
+        random_forest_results.append(these_random_forest_results)
 
-        # adaboost = SKLearnBagOfWords(AdaBoostClassifier)
-        # adaboost.train(training_data)
-        # these_adaboost_results = adaboost.test(testing_data, top_number=args.top)
-        # adaboost_results.append(these_adaboost_results)
+        adaboost = SKLearnBagOfWords(AdaBoostClassifier)
+        adaboost.train(training_data)
+        these_adaboost_results = adaboost.test(testing_data, top_number=args.top)
+        adaboost_results.append(these_adaboost_results)
 
-        # randomness = Randomness()
-        # randomness.train(training_data)
-        # these_randomness_results = randomness.test(testing_data, top_number=args.top)
-        # randomness_results.append(these_randomness_results)
+        randomness = Randomness()
+        randomness.train(training_data)
+        these_randomness_results = randomness.test(testing_data, top_number=args.top)
+        randomness_results.append(these_randomness_results)
 
 
-# results = [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results, bayes_title_results, bagging_results]
-# keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomness', 'bayes_title', 'bagging']
+results = [bayes_results, tags_results, random_forest_results, adaboost_results, randomness_results, bayes_title_results, bagging_results]
+keys = ['bayes', 'tags', 'random_forest', 'adaboost', 'randomness', 'bayes_title', 'bagging']
 
 # results = [bayes_results, bayes_title_results, tags_results, randomness_results]
 # keys = ['bayes', 'bayes_title', 'tags', 'randomness']
 
-results = [combo_results, bayes_results]
-keys = ['combo', 'bayes']
+# results = [combo_results, bayes_results]
+# keys = ['combo', 'bayes']
+
 individual_frames = [DataFrame(x) for x in results]
 total_frame = pd.concat(individual_frames, axis=1, keys=keys)
 total_frame = total_frame.swaplevel(0, 1, axis=1)

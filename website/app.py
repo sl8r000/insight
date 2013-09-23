@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-import pickle
+import cPickle as pickle
 
 import config
 from stack_exchange.stack_exchange_client import StackExchangeClient
